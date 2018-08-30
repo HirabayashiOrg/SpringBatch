@@ -1,0 +1,22 @@
+@startuml
+
+-> ChunkOrientedTsklet : execute()
+  activate ChunkOrientedTsklet
+loop items
+  loop chunkSize
+  ChunkOrientedTsklet -> ItemReader : read()
+    activate ItemReader
+  ChunkOrientedTsklet <-- ItemReader : item
+    deactivate  ItemReader
+  ChunkOrientedTsklet -> ItemProcessor : process(item)
+    activate ItemProcessor
+  ChunkOrientedTsklet <-- ItemProcessor : item
+    deactivate  ItemProcessor
+  end
+  ChunkOrientedTsklet -> ItemWriter : write(item)
+    activate ItemWriter
+  ChunkOrientedTsklet <-- ItemWriter
+    deactivate ItemWriter
+end
+<-- ChunkOrientedTsklet : RepeatStatus
+@enduml
